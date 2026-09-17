@@ -7,7 +7,12 @@ name = "personal-knowledge-base-api"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+  "email-validator>=2.2,<3",
   "fastapi>=0.116,<1",
+  "psycopg[binary]>=3.2,<4",
+  "pwdlib[argon2]>=0.3,<1",
+  "pyjwt>=2.10,<3",
+  "sqlmodel>=0.0.24,<1",
   "uvicorn>=0.35,<1",
 ]
 
@@ -22,3 +27,4 @@ packages = ["app"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
