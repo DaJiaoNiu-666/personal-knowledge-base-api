@@ -1,17 +1,17 @@
 # Personal Knowledge Base API
 
-A learning project for a multi-user knowledge-base backend built with FastAPI.
+A working MVP for a multi-user knowledge-base backend built with FastAPI and SQLModel.
 
-> Status: initial scaffold. The repository does not yet implement the full feature set described in the roadmap.
+## Implemented
 
-## Planned scope
-
-- JWT authentication and per-user resource ownership
-- Knowledge bases, documents, and import tasks
-- Pagination and consistent API errors
-- SHA-256 duplicate detection and retryable import states
-- PostgreSQL persistence with SQLModel
-- API tests with pytest
+- Email registration, password hashing, and JWT authentication
+- Four core tables: users, knowledge bases, documents, and import tasks
+- Per-user ownership checks that return 404 for inaccessible resources
+- Pagination for knowledge bases and documents
+- SHA-256 duplicate detection backed by a database unique constraint
+- Pending and failed import-task states with guarded retry
+- SQLite for zero-config development and PostgreSQL through `DATABASE_URL`
+- pytest coverage for authentication, authorization, pagination, duplicates, and import tasks
 
 ## Upstream reference
 
@@ -22,6 +22,7 @@ Architecture and engineering conventions are studied from [fastapi/full-stack-fa
 ```bash
 python -m venv .venv
 pip install -e ".[dev]"
+set SECRET_KEY=replace-this-in-production
 uvicorn app.main:app --reload
 pytest
 ```
@@ -37,7 +38,12 @@ docker run --rm -p 8000:8000 personal-knowledge-base-api
 
 ## Roadmap
 
-1. Add PostgreSQL and SQLModel models.
-2. Add authentication and ownership checks.
-3. Add document import state tracking.
-4. Add duplicate detection and API tests.
+1. Add a worker that moves imports through running, succeeded, and failed states.
+2. Parse uploaded files instead of accepting document text only.
+3. Add Alembic migrations before the first deployed database.
+
+## Configuration
+
+- `SECRET_KEY`: required for a real deployment; the built-in value is development-only.
+- `DATABASE_URL`: defaults to `sqlite:///./app.db`; use a PostgreSQL SQLAlchemy URL in deployment.
+
